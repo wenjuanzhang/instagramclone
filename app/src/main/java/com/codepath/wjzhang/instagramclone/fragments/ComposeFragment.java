@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -50,6 +51,7 @@ public class ComposeFragment extends Fragment {
     private Button btnCaptureImage;
     private ImageView ivPostImage;
     private Button btnSubmit;
+    private Button btnCancel;
     private Button btnLogout;
     private File photoFile ;
     private ImageView ivProfile;
@@ -110,7 +112,8 @@ public class ComposeFragment extends Fragment {
         etDescription = view.findViewById(R.id.etDescription);
         btnCaptureImage = view.findViewById(R.id.btnCaptureImage);
         btnSubmit = view.findViewById(R.id.btnSubmit);
-        btnLogout = view.findViewById(R.id.btnCancel);
+        btnLogout = view.findViewById(R.id.btnLogout);
+        btnCancel = view.findViewById(R.id.btnCancel);
         ivPostImage = view.findViewById(R.id.ivPostImage);
         ivProfile = view.findViewById(R.id.ivProfile);
 
@@ -120,6 +123,15 @@ public class ComposeFragment extends Fragment {
             public void onClick(View v) {
                 LaunchCamera();
 
+            }
+        });
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.flContainer, new PostsFragment())
+                        .commit();
             }
         });
         btnSubmit.setOnClickListener(new View.OnClickListener() {
@@ -137,6 +149,7 @@ public class ComposeFragment extends Fragment {
                 }
                 ParseUser currentUser = ParseUser.getCurrentUser();
                 savePost(description, currentUser, photoFile);
+                Toast.makeText(getContext(),"Saved!",Toast.LENGTH_SHORT).show();
             }
         });
         btnLogout.setOnClickListener(new View.OnClickListener() {
